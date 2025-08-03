@@ -1,1 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&display=swap');
 @import "tailwindcss";
+
+
+body {
+     font-family: "Mozilla Headline", sans-serif;
+  
+
+}
