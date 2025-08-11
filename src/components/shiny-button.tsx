@@ -10,7 +10,7 @@ interface ShinyButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement>{
 
 export const ShinyButton = ({className, children, href, ...props}:ShinyButtonProps) => {
 
-    return <Link href={href ?? "#"} className={cn("group relative px-8 flex justify-center items-center border border-white gap-2 text-white bg-emerald-700 text-base/7 transform transition-all duration-300 rounded-md overflow-hidden font-medium hover:ring-2 hover:ring-emerald-700 hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-offset-2", className)} {...props}>
+    return <Link href={href ?? "#"} className={cn("group relative px-8 flex justify-center items-center border border-white gap-2 text-white bg-cyan-700 text-base/7 transform transition-all duration-300 rounded-md overflow-hidden font-medium hover:ring-2 hover:ring-cyan-700 hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-offset-2", className)} {...props}>
     <span className="relative z-10 flex items-center gap-2">
         {children}
         <ArrowRight className="size-4 shrink-0 text-white transition-transform duration-300 ease-in-out group-hover:translate-x-[2px]" />
