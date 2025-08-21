@@ -9,7 +9,7 @@ return <>
   <MaxWidthWrapper className="text-center">
     <div className="relative mx-auto flex flex-col text-center items-center gap-10">
 <div>
-  <Heading className="text-shadow-2xs">
+  <Heading className="text-shadow-md">
     <span>Connect your SaaS to Discord.</span>
     <br/>
     <span className="bg-gradient-to-r from-cyan-600 to-cyan-900 bg-clip-text text-transparent">Monitor events in real time.</span>
