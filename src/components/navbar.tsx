@@ -2,9 +2,10 @@ import Link from "next/link"
 import { MaxWidthWrapper } from "./max-width-wrapper"
 import { SignOutButton } from "@clerk/nextjs"
 import { Button, buttonVariants } from "./ui/button"
+import { currentUser } from "@clerk/nextjs/server"
 
-export const Navbar = () => {
-    const user = true
+export const Navbar = async() => {
+    const user = await currentUser()
     return <div className="sticky h-16 z-[100] top-0 bg-white/80 border-b border-gray-100">
         <MaxWidthWrapper>
             <div className="flex items-center justify-between h-16">
@@ -32,9 +33,15 @@ export const Navbar = () => {
                     </Link>
                     <Link href="/sign-in" className={buttonVariants({
                         size:"lg",
-                        className:"flex items-center gap-1.5"
+                        variant:"ghost"
                     })}>
                    SignIn
+                    </Link>
+                     <Link href="/sign-up" className={buttonVariants({
+                        size:"lg",
+                        className:"flex items-center gap-1.5"
+                    })}>
+                   SignUp
                     </Link>
                     </>)}
 
