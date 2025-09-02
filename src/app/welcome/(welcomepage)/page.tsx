@@ -30,7 +30,7 @@ if(data?.isSynced) router.push("/dashboard")
         <div className="flex flex-1 justify-center items-center px-4 w-full">
             <BackgroundPattern className="absolute inset-0 left-1/2 z-0 -translate-x-1/2 opacity-75" />
             <div className="relative z-10 flex -translate-y-1/2 flex-col items-center gap-6 text-center">
-                <LoadingSpinner size="md" />
+                <LoadingSpinner size="lg" />
                 <Heading>Creating your account...</Heading>
                 <p className="text-2xl text-gray-600">Just a moment while we setup things for you</p>
             </div>
