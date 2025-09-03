@@ -11,7 +11,7 @@ const Page = () => {
   const router = useRouter()
   const {data} = useQuery({
     queryFn: async () => {
-      const res= await fetch ("/api/auth")
+      const res= await fetch ("/api/auth/getDatabaseSyncStatus")
       return await res.json() 
 
     },
