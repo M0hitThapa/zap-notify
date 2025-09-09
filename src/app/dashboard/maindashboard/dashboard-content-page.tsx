@@ -2,10 +2,12 @@
 
 import LoadingSpinner from "@/components/loading-spinner"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { useQuery } from "@tanstack/react-query"
+import { Modal } from "@/components/ui/modal"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { format, formatDistanceToNow, isValid } from "date-fns"
 import { ArrowRight, BarChart2, Clock, Database, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 import superjson from "superjson"
 
 
@@ -24,6 +26,10 @@ interface EventCategory {
 
 export const DashboardContentPage = () => {
 
+    const [deletingCategory, setDeletingCategory] = useState<string | null>(null)
+
+    const queryClient = useQueryClient()
+
     const {data:categories, isPending:isEventCategoriesLoading} = useQuery({
         queryKey:["user-event-categories"],
         queryFn:async () => {
@@ -38,6 +44,27 @@ export const DashboardContentPage = () => {
         }
     })
 
+
+
+
+
+    const {mutate:deleteCategory, isPending:isDeletingCategory} = useMutation({
+        mutationFn:async(name:string) => {
+          const response = await fetch(`/api/category/deleteCategory/${name}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+        }, 
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:["user-event-categories"]})
+            setDeletingCategory(null)
+        }
+    })
+
+
     if(isEventCategoriesLoading) {
         return (<div className="flex items-center justify-center flex-1 h-full w-full">
             <LoadingSpinner />
@@ -49,6 +76,7 @@ export const DashboardContentPage = () => {
         return <div>Empty State</div>
     }
     return (
+      <>
         <ul className="grid max-w-6xl geid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {categories.map((category) => (
             <li key={category.id} className="relative group z-10 transition-all duration-200 hover:-translate-x-0.5">
@@ -113,7 +141,7 @@ export const DashboardContentPage = () => {
                     view all <ArrowRight className="size-4" />
                     
                     </Link>
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-red-600 transition-colors" aria-label={`Delete ${category.name} category`}>
+                    <Button onClick={() => setDeletingCategory(category.name)} variant="ghost" size="sm" className="text-gray-500 hover:text-red-600 transition-colors" aria-label={`Delete ${category.name} category`}>
                         <Trash2 className="size-5" />
                     </Button>
 
@@ -130,5 +158,33 @@ export const DashboardContentPage = () => {
 
            ))}
         </ul>
+
+      <Modal showModal={!!deletingCategory}
+      setShowModal={() => setDeletingCategory(null)}
+      className="max-w-md p-8" >
+        <div className="space-y-6">
+            <div>
+                <h2 className="text-lg/7 font-medium tracking-tight text-gray-900">Delete Category</h2>
+                <p>Are you sure you want to delete the category "{deletingCategory}"?
+                    This cannot be undone.
+                </p>
+            </div>
+            <div className="flex justify-end space-x-3 pt-4 border-t">
+                <Button variant="outline" onClick={() => setDeletingCategory(null)}>
+                    Cancel
+                </Button>
+         <Button variant="destructive" onClick={() => deletingCategory && deleteCategory(deletingCategory)} disabled={isDeletingCategory}>
+                       {isDeletingCategory ? "Deleting..." :"Delete"}
+                    </Button>
+
+
+            </div>
+
+        </div>
+
+      </Modal>
+        
+        </>
+        
     )
 }
