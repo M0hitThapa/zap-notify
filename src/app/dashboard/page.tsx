@@ -8,6 +8,9 @@ import { DashboardContentPage } from "./maindashboard/dashboard-content-page"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import prisma from "@/lib/prisma"
+import { CreateContentCategoryModal } from "@/components/create-event-category-modal"
+import { Button } from "@/components/ui/button"
+import { PlusIcon } from "lucide-react"
 
  const Page = async() => {
 
@@ -29,7 +32,13 @@ import prisma from "@/lib/prisma"
 
     return (
         <QueryClientProviderWrapper>
-            <DashboardPage title="Dashboard"><DashboardContentPage /></DashboardPage>
+            <DashboardPage cta={<CreateContentCategoryModal>
+               <Button>
+                <PlusIcon className="size-4 mr-2" />
+                 Add Category
+               </Button>
+            </CreateContentCategoryModal>}  title="Dashboard"><DashboardContentPage />
+            </DashboardPage>
         </QueryClientProviderWrapper>
     )
 }

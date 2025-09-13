@@ -6,7 +6,7 @@ import { Heading } from "./heading"
 interface DashboardPageProps {
     title:string,
     children?:ReactNode,
-    cta?:string,
+    cta?:ReactNode,
     hideBackButton?:boolean
 }
 
