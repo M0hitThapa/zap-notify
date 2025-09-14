@@ -10,6 +10,7 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
+import { Button } from "./ui/button"
 
 const EVENT_CATEGORY_VALIDATE = z.object({
     name:CATEGORY_VALIDATE_NAME,
@@ -64,6 +65,7 @@ const onSubmit = (data:EventCategoryForm) => {
 }
 
 const color = watch("color")
+const selectedEmoji = watch("emoji")
 
     return (
         <>
@@ -91,19 +93,53 @@ const color = watch("color")
             <div>
                 <Label>Color</Label>
                 {COLOR_OPTIONS.map((premadeColor) => (
-                    <button type="button" key={premadeColor} className={cn(`${premadeColor}`, "size-10 rounded-full ring-2 ring-offset-2 transition-all ml-2", 
+                    <button type="button" key={premadeColor} className={cn(`bg-[${premadeColor}]`, "size-10 rounded-full ring-2 ring-offset-2 transition-all ml-2", 
                         color === premadeColor ? "ring-cyan-700 scale-110" : "ring-transparent hover:scale-105"
                     )} 
                     onClick={() => setValue("color", premadeColor)}
-                    ></button>
+                    >
+                        
+                    </button>
 
                 ))}
+
+
+                
                 {errors.color ? (
                     <p className="mt-1 text-sm text-red-500">{errors.color.message}</p>
                 ): null}
 
 
                 
+            </div>
+
+            <div>
+                <Label>Emoji</Label>
+                {EMOJI_OPTIONS.map(({emoji, label}) => (
+                    <button key={emoji} type="button" className={cn("size-10 rounded-md text-xl justify-center items-center transition-all mt-2 ml-2", 
+                        selectedEmoji === emoji ? 
+                        "bg-cyan-100 ring-2 ring-cyan-700 scale-110"
+                        : "bg-cyan-100 hover:bg-cyan-700"
+                        
+                    )} onClick={() => setValue("emoji", emoji)}>
+                        {emoji}
+
+                    </button>
+                ))}
+
+                {errors.emoji ? (
+                    <p className="text-sm mt-1 text-red-500">{errors.emoji.message}</p>
+                ):null}
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4 border-t">
+                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                    Cancel
+                </Button>
+                <Button type="submit">
+                    Create Category
+                </Button>
+
             </div>
 
             
