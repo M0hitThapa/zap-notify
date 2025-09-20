@@ -1,7 +1,7 @@
 'use client'
 
 import { CATEGORY_VALIDATE_NAME } from "@/lib/validators/category-validate"
-import { useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { PropsWithChildren, useState } from "react"
 import z from "zod"
 import { Modal } from "./ui/modal"
@@ -11,6 +11,7 @@ import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
+import axios from "axios"
 
 const EVENT_CATEGORY_VALIDATE = z.object({
     name:CATEGORY_VALIDATE_NAME,
@@ -56,12 +57,27 @@ export const CreateContentCategoryModal = ({children}: PropsWithChildren) => {
     const [isOpen, setIsOpen] = useState(false)
     const queryClient = useQueryClient()
 
+    const {mutate:createEventCategory} = useMutation({
+    mutationFn:async (data:EventCategoryForm) => {
+        const response = await axios.post("/api/category/createEventCategory", data, {
+            headers:{
+                "Content-Type":'application/json'
+            }
+        });
+        return response.data
+    },
+    onSuccess:() => {
+        queryClient.invalidateQueries({queryKey:["user-event-categories"]})
+        setIsOpen(false)
+    }
+})
+
    const {register, handleSubmit, formState:{errors}, watch, setValue} = useForm<EventCategoryForm>({
     resolver:zodResolver(EVENT_CATEGORY_VALIDATE)
 })
 
 const onSubmit = (data:EventCategoryForm) => {
-
+createEventCategory(data)
 }
 
 const color = watch("color")

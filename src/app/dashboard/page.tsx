@@ -33,8 +33,8 @@ import { PlusIcon } from "lucide-react"
     return (
         <QueryClientProviderWrapper>
             <DashboardPage cta={<CreateContentCategoryModal>
-               <Button>
-                <PlusIcon className="size-4 mr-2" />
+               <Button variant="outline" className="h-12 cursor-pointer bg-cyan-700 hover:text-white hover:bg-cyan-600 text-white transition-all duration-300">
+                <PlusIcon className="size-4 " />
                  Add Category
                </Button>
             </CreateContentCategoryModal>}  title="Dashboard"><DashboardContentPage />
